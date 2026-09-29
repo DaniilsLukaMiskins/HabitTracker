@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HabitTrackerDomain\HabitTrackerDomain.csproj" />
+    <ProjectReference Include="..\HabitTrackerShared\HabitTrackerShared.csproj" />
+  </ItemGroup>
+
 </Project>
