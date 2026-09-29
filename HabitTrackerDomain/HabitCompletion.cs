@@ -6,8 +6,5 @@ namespace HabitTrackerDomain
 {
     internal class HabitCompletion
     {
-
-
-
     }
 }

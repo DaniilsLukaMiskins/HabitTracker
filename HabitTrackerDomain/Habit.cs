@@ -14,8 +14,8 @@ namespace HabitTrackerDomain
         public string UserID{  get; } //Lietotaja ID
         public string Name { get; private set; } // Ieraduma vards
 
-        private string? _description;
-        public string? Description {  // Ieraduma arpraksts
+        private string? _description;// Ieraduma apraksts
+        public string? Description {  // Ieraduma arpraksta ierakstīšana
             get {  return _description; }
             set
             {
@@ -29,43 +29,46 @@ namespace HabitTrackerDomain
         }
         public bool isArchived {  get; private set; } = false; // Vai ieradums ir arhivets
 
+        public HabitFrequency Frequency { get; private set; } //Ieraduma atkārtošanas biežums
+
         public DateTime CreatedTime {  get; }
         public DateTime UpdatedTime { get; private set; }
 
 
-        public Habit( string id, string userId, string name, string? description) //konstruktors
+        public Habit( string id, string userId, string name, string? description, HabitFrequency frequency = HabitFrequency.Diena) //konstruktors
         {
             if(string.IsNullOrWhiteSpace(id))
             {
 
-                throw new ArgumentNullException("Ieraduma ID nedrīkst būt tukšs");
+                throw new ArgumentException("Ieraduma ID nedrīkst būt tukšs");
                 
             }
             ID = id;
             if (string.IsNullOrWhiteSpace(userId))
             {
 
-                throw new ArgumentNullException("Lietotāja ID nedrīkst būt tukšs");
+                throw new ArgumentException("Lietotāja ID nedrīkst būt tukšs");
 
             }
             UserID = userId;
             if (string.IsNullOrWhiteSpace(name))
             {
 
-                throw new ArgumentNullException("Ieraduma vards nedrīkst būt tukšs");
+                throw new ArgumentException("Ieraduma vards nedrīkst būt tukšs");
 
             }
             name = name.Trim();
             if (name.Length>100)
             {
 
-                throw new ArgumentNullException("Ieraduma vards nedrīkst būt lielāks par 100 simboliem");
+                throw new ArgumentException("Ieraduma vards nedrīkst būt lielāks par 100 simboliem");
 
             }
             Name = name;
             Description= description;
             CreatedTime = DateTime.Now;
             UpdatedTime = CreatedTime;
+            Frequency = frequency;
         }
 
 
