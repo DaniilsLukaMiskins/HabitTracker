@@ -34,6 +34,13 @@ namespace HabitTrackerDomain
         public DateTime CreatedTime {  get; }
         public DateTime UpdatedTime { get; private set; }
 
+        private List<HabitCompletion> _completions = new List<HabitCompletion>(); // Ieraduma izpildes ieraksti
+
+        public IReadOnlyList<HabitCompletion> Completions
+        {
+            get { return _completions.AsReadOnly(); }
+        }
+
 
         public Habit( string id, string userId, string name, string? description, HabitFrequency frequency = HabitFrequency.Diena) //konstruktors
         {
@@ -70,6 +77,56 @@ namespace HabitTrackerDomain
             UpdatedTime = CreatedTime;
             Frequency = frequency;
         }
+
+        public void MarkCompleted(string completionId, DateOnly date) // Atzīmēt izpildītus ieradumus
+        {
+            if (isArchived)
+            {
+                throw new InvalidOperationException("Arhivētu ieradumu nevar atzīmēt kā izpildītu.");
+            }
+
+            foreach (HabitCompletion completion in _completions)
+            {
+                if (completion.Date == date)
+                {
+                    throw new InvalidOperationException("Šajā datumā ieradums jau ir atzīmēts kā izpildīts.");
+                }
+            }
+
+            HabitCompletion newCompletion = new HabitCompletion(completionId, ID, date);
+
+            _completions.Add(newCompletion);
+
+            UpdatedTime = DateTime.Now;
+        }
+
+        public void SetArchived(bool archived)//Arhivēt ieradumu
+        {
+            isArchived = archived;
+            UpdatedTime = DateTime.Now;
+        }
+
+        public void Update(string name, string? description, HabitFrequency frequency) // atjaunināt informāciju
+        {
+             if (string.IsNullOrWhiteSpace(name))
+             {
+                  throw new ArgumentException( "Ieraduma vards nedrīkst būt tukšs");
+             }
+
+             name = name.Trim();
+
+             if (name.Length > 100)
+             {
+                  throw new ArgumentException( "Ieraduma vards nedrīkst būt lielāks par 100 simboliem");
+             }
+
+             Name = name;
+             Description = description;
+             Frequency = frequency;
+
+             UpdatedTime = DateTime.Now;
+        }
+
 
 
     }
