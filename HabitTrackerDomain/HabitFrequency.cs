@@ -12,6 +12,8 @@ namespace HabitTrackerDomain
         Diena,
         Nedela,
         Menesis,
-        Gads
+        Gads,
+        DarbaDienas,
+        Brivdienas
     }
 }
