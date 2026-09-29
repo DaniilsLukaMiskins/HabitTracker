@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-//koda validacijai bija iazmantots ChatGPT-6 Astra
+//koda validacijai un kļudu labošanai bija iazmantots ChatGPT-6 Astra
 //https://learn.microsoft.com/en-us saite bija izmantota metožu atrašanai 
 
 namespace HabitTrackerDomain
