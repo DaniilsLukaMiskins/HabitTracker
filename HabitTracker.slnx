@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="HabitTrackerConsole/HabitTrackerConsole.csproj" />
+  <Project Path="HabitTrackerDomain/HabitTrackerDomain.csproj" />
+  <Project Path="HabitTrackerShared/HabitTrackerShared.csproj" />
+</Solution>
