@@ -10,7 +10,7 @@ using System.Text;
 
 
 
-namespace HabitTrackerConsole
+namespace HabitTrackerTestData
 {
     public class TestDataFactory
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using HabitTrackerConsole;
+using HabitTrackerTestData;
 using HabitTrackerDomain;
 
 //koda validacijai un kļudu labošanai bija iazmantots ChatGPT-6 Astra

@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HabitTrackerDomain\HabitTrackerDomain.csproj" />
     <ProjectReference Include="..\HabitTrackerShared\HabitTrackerShared.csproj" />
+    <ProjectReference Include="..\HabitTrackerTestData\HabitTrackerTestData.csproj" />
   </ItemGroup>
 
 </Project>
