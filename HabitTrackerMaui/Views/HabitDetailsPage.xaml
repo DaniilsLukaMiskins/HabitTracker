@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HabitTrackerMaui.ViewModels"
+             x:Class="HabitTrackerMaui.Views.HabitDetailsPage"
+             x:DataType="vm:HabitDetailsViewModel"
+             Title="Ieraduma informācija">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="{Binding IsNotBusy}" TextOverride="Atpakaļ" />
+    </Shell.BackButtonBehavior>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14" IsEnabled="{Binding IsNotBusy}">
+            <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}"
+                   TextColor="{AppThemeBinding Light=#B42318, Dark=#FFB4AB}" />
+            <Button Text="Mēģināt ielādēt vēlreiz" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" />
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            <Label Text="{Binding Habit.Name}" FontSize="26" FontAttributes="Bold" />
+            <Label Text="{Binding Habit.Description, TargetNullValue='Apraksts nav norādīts.'}" />
+            <Label Text="{Binding FrequencyText}" />
+            <Label Text="{Binding StatusText}" />
+            <Label Text="{Binding Habit.CreatedTime, StringFormat='Izveidots: {0:dd.MM.yyyy HH:mm}'}" />
+            <Label Text="{Binding Habit.UpdatedTime, StringFormat='Mainīts: {0:dd.MM.yyyy HH:mm}'}" />
+            <VerticalStackLayout Spacing="12" IsEnabled="{Binding CanChange}">
+                <Label Text="Izpildes datums" FontAttributes="Bold" />
+                <DatePicker Date="{Binding SelectedDate, Mode=TwoWay}" Format="dd.MM.yyyy" />
+                <Label Text="{Binding SelectedDateStatus}" />
+                <Button Text="Atzīmēt izpildi" Command="{Binding MarkCompletedCommand}" />
+                <Button Text="Rediģēt" Command="{Binding EditCommand}" />
+                <Button Text="Arhivēt" Command="{Binding ArchiveCommand}" />
+            </VerticalStackLayout>
+            <Label Text="{Binding SuccessMessage}" TextColor="{AppThemeBinding Light=#236C3D, Dark=#A4E4B6}" />
+            <Label Text="Izpildes vēsture" FontSize="22" FontAttributes="Bold" />
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding History}" Spacing="8">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Label Text="{Binding .}" />
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

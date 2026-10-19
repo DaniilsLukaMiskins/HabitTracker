@@ -42,7 +42,7 @@ namespace HabitTrackerDomain
         }
 
 
-        public Habit( string id, string userId, string name, string? description, HabitFrequency frequency = HabitFrequency.Diena) //konstruktors
+        public Habit( string id, string userId, string name, string? description, HabitFrequency frequency = HabitFrequency.Diena, DateTime? createdTime = null) //konstruktors
         {
             if(string.IsNullOrWhiteSpace(id))
             {
@@ -73,7 +73,7 @@ namespace HabitTrackerDomain
             }
             Name = name;
             Description= description;
-            CreatedTime = DateTime.Now;
+            CreatedTime = createdTime ?? DateTime.Now;
             UpdatedTime = CreatedTime;
             Frequency = frequency;
         }
@@ -127,6 +127,50 @@ namespace HabitTrackerDomain
              UpdatedTime = DateTime.Now;
         }
 
+
+    
+        public static Habit Restore(string id, string userId, string name, string? description,
+            HabitFrequency frequency, DateTime createdTime, DateTime updatedTime,   // Atjauno ieradumu no saglabātajiem datiem, saglabājot tā ID,
+            bool archived, IEnumerable<HabitCompletion> completions)                // izveides un labošanas laiku, arhīva statusu un izpildes vēsturi.
+        {
+            if (!Enum.IsDefined(frequency))
+            {
+                throw new ArgumentException("Saglabātais ieraduma biežums nav derīgs.");
+            }
+            if (completions == null)
+            {
+                throw new ArgumentNullException("completions", "Izpildes ierakstu saraksts nedrīkst būt null.");
+            }
+
+            Habit habit = new Habit(id, userId, name, description, frequency, createdTime);
+            foreach (HabitCompletion completion in completions)
+            {
+                if (completion == null || completion.HabitID != id)
+                {
+                    throw new ArgumentException("Izpildes ieraksts nepieder šim ieradumam.");
+                }
+
+                // Izmanto esošās ID un atkārtota datuma pārbaudes.
+                habit.MarkCompleted(completion.ID, completion.Date);
+            }
+
+            // Arhīvu un saglabāto laiku piešķir pēc vēstures atjaunošanas.
+            habit.isArchived = archived;
+            habit.UpdatedTime = updatedTime;
+            return habit;
+        }
+
+        public bool IsCompletedOn(DateOnly date) // Pārbauda, vai ieradums ir izpildīts norādītajā datumā.
+        {
+            foreach (HabitCompletion completion in _completions)
+            {
+                if (completion.Date == date)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
 
     }

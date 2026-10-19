@@ -1,24 +1,47 @@
-﻿namespace HabitTrackerMaui
+﻿using HabitTrackerMaui.ViewModels;
+
+//koda validacijai un kļudu labošanai bija iazmantots ChatGPT-6 Astra
+//https://learn.microsoft.com/en-us saite bija izmantota metožu atrašanai
+namespace HabitTrackerMaui
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        private readonly HabitsViewModel _viewModel;
+        private readonly IDispatcherTimer _dateTimer;
 
-        public MainPage()
+        public MainPage(HabitsViewModel viewModel)
         {
             InitializeComponent();
+            // Saista lapu ar ieradumu saraksta datiem.
+            _viewModel = viewModel;
+            BindingContext = viewModel;
+            _dateTimer = Dispatcher.CreateTimer();
+            _dateTimer.Interval = TimeSpan.FromMinutes(1);
+            _dateTimer.Tick += OnDateTimerTick;
         }
 
-        private void OnCounterClicked(object? sender, EventArgs e)
+        // Atjauno sarakstu, atverot lapu.
+        protected override async void OnAppearing()
         {
-            count++;
+            base.OnAppearing();
+            await _viewModel.RefreshAsync();
+            _dateTimer.Start();
+        }
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
+        // Aptur datuma pārbaudi, aizejot no lapas.
+        protected override void OnDisappearing()
+        {
+            _dateTimer.Stop();
+            base.OnDisappearing();
+        }
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+        // Atjauno šodienas statusu pēc datuma maiņas.
+        private async void OnDateTimerTick(object? sender, EventArgs e)
+        {
+            if (_viewModel.IsLoaded && _viewModel.LoadedDate != DateOnly.FromDateTime(DateTime.Today))
+            {
+                await _viewModel.RefreshAsync();
+            }
         }
     }
 }

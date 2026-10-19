@@ -1,7 +1,10 @@
 <Solution>
   <Project Path="HabitTrackerConsole/HabitTrackerConsole.csproj" />
   <Project Path="HabitTrackerDomain/HabitTrackerDomain.csproj" />
-  <Project Path="HabitTrackerMaui/HabitTrackerMaui.csproj" Id="2145a0a0-155f-4364-8c24-f7280082bb4e" />
+  <Project Path="HabitTrackerInfrastructure/HabitTrackerInfrastructure.csproj" />
+  <Project Path="HabitTrackerMaui/HabitTrackerMaui.csproj" Id="2145a0a0-155f-4364-8c24-f7280082bb4e">
+    <Deploy Solution="Debug|*" />
+  </Project>
   <Project Path="HabitTrackerShared/HabitTrackerShared.csproj" />
   <Project Path="HabitTrackerTestData/HabitTrackerTestData.csproj" Id="43e037a9-8c9f-4cfc-ae2c-eaf1d8825c6c" />
 </Solution>

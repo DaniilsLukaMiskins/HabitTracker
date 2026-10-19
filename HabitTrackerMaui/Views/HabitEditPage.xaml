@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HabitTrackerMaui.ViewModels"
+             x:Class="HabitTrackerMaui.Views.HabitEditPage"
+             x:DataType="vm:HabitEditViewModel"
+             Title="{Binding Title}">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="{Binding IsNotBusy}" TextOverride="Atpakaļ" />
+    </Shell.BackButtonBehavior>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14" IsEnabled="{Binding IsNotBusy}">
+            <Label Text="{Binding Title}" FontSize="26" FontAttributes="Bold" />
+            <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}"
+                   TextColor="{AppThemeBinding Light=#B42318, Dark=#FFB4AB}" />
+            <Button Text="Mēģināt ielādēt vēlreiz" Command="{Binding LoadCommand}">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding CanSave}" Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            <Label Text="Nosaukums (obligāts, līdz 100 rakstzīmēm)" />
+            <Entry Text="{Binding Name, Mode=TwoWay}" Placeholder="Piemēram, lasīt grāmatu" />
+            <Label Text="Apraksts" />
+            <Editor Text="{Binding Description, Mode=TwoWay}" Placeholder="Ko vēlaties paveikt?"
+                    AutoSize="TextChanges" MinimumHeightRequest="110" />
+            <Label Text="Atkārtošanās biežums" />
+            <Picker Title="Izvēlieties biežumu" ItemsSource="{Binding Frequencies}"
+                    ItemDisplayBinding="{Binding Title, x:DataType=vm:FrequencyOption}"
+                    SelectedItem="{Binding SelectedFrequency, Mode=TwoWay}" />
+            <Button Text="Saglabāt" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" />
+            <Button Text="Atcelt" Command="{Binding CancelCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
